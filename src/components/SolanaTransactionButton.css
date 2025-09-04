@@ -1,0 +1,21 @@
+
+.solana-transaction-button {
+    background-color: #9945FF; /* Solana purple */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 15px;
+}
+
+.solana-transaction-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.solana-transaction-button:hover:not(:disabled) {
+    background-color: #7a37cc;
+}
