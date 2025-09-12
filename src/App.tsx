@@ -9,6 +9,7 @@ import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { clusterApiUrl } from '@solana/web3.js';
+import { ConfigProvider, theme } from 'antd';
 
 require('@solana/wallet-adapter-react-ui/styles.css');
 
@@ -21,24 +22,26 @@ function App() {
   const wallets = useMemo(() => [new PhantomWalletAdapter()], [network]);
 
   return (
-    <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>
-        <WalletModalProvider>
-          <div className="App-container">
-            <div className="sidebar">
-              <QRCodeCanvas value={url} size={256} />
-              <a href={url} target="_blank" rel="noopener noreferrer">
-                {url}
-              </a>
+    <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
+      <ConnectionProvider endpoint={endpoint}>
+        <WalletProvider wallets={wallets} autoConnect>
+          <WalletModalProvider>
+            <div className="App-container">
+              <div className="sidebar">
+                <QRCodeCanvas value={url} size={256} bgColor="#FFFFFF" fgColor="#000000" />
+                <a href={url} target="_blank" rel="noopener noreferrer">
+                  {url}
+                </a>
+              </div>
+              <div className="right-container">
+                <SolanaConnect />
+                <BiddingRoom />
+              </div>
             </div>
-            <div className="right-container">
-              <SolanaConnect />
-              <BiddingRoom />
-            </div>
-          </div>
-        </WalletModalProvider>
-      </WalletProvider>
-    </ConnectionProvider>
+          </WalletModalProvider>
+        </WalletProvider>
+      </ConnectionProvider>
+    </ConfigProvider>
   );
 }
 

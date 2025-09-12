@@ -3,7 +3,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #1f1f1f;
   padding: 20px;
   color: white;
 }
@@ -15,10 +15,11 @@
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  border: 1px solid #ccc;
+  border: 1px solid #444;
   border-radius: 8px;
   overflow: hidden;
   margin-top: 10px;
+  background-color: #1f1f1f;
 }
 
 .messages {
@@ -28,7 +29,7 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-  background-color: #f9f9f9;
+  background-color: #141414;
 }
 
 .message {
@@ -37,10 +38,11 @@
   gap: 15px;
   padding: 10px 15px;
   border-radius: 20px;
-  background-color: #ffffff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  background-color: #262626;
+  box-shadow: none;
   max-width: 70%;
   word-break: break-word;
+  color: #ffffff;
 }
 
 .message span {
@@ -51,21 +53,22 @@
 
 .message p {
   margin: 0;
+  color: #e8e8e8;
 }
 
 .input-area {
   display: flex;
   justify-content: space-between;
   padding: 15px;
-  border-top: 1px solid #ccc;
-  background-color: #fff;
+  border-top: 1px solid #444;
+  background-color: #1f1f1f;
 }
 .contractInfo-area {
   display: flex;
   justify-content: end;
   padding: 15px;
-  border-top: 1px solid #ccc;
-  background-color: #fff;
+  border-top: 1px solid #444;
+  background-color: #1f1f1f;
 }
 
 .botton-contractInfo {
@@ -73,33 +76,36 @@
   
   border: none;
   background-color: #25b720;
-  color: rgb(33, 31, 31);
+  color: #ffffff;
   border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 
+.amount-input,
+.text-input {
+  padding: 10px;
+  border: 1px solid #555;
+  border-radius: 20px;
+  background-color: #333;
+  color: #ffffff;
+}
+
 .amount-input {
   width: 100px;
   margin-right: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
 }
 
 .text-input {
   flex-grow: 1;
   margin-right: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
 }
 
 button {
   padding: 10px 20px;
   border: none;
-  background-color: #282c34;
+  background-color: #333;
   color: white;
   border-radius: 20px;
   cursor: pointer;
