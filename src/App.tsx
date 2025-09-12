@@ -28,7 +28,9 @@ function App() {
           <WalletModalProvider>
             <div className="App-container">
               <div className="sidebar">
-                <QRCodeCanvas value={url} size={256} bgColor="#FFFFFF" fgColor="#000000" />
+                                <div className="qr-code-container">
+                  <QRCodeCanvas value={url} size={256} bgColor="#FFFFFF" fgColor="#000000" />
+                </div>
                 <a href={url} target="_blank" rel="noopener noreferrer">
                   {url}
                 </a>
