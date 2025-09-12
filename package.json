@@ -23,6 +23,7 @@
     "@types/react-dom": "^19.1.7",
     "@walletconnect/core": "^2.21.8",
     "@walletconnect/utils": "^2.21.8",
+    "antd": "^5.27.3",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.1",
     "qrcode.react": "^4.2.0",

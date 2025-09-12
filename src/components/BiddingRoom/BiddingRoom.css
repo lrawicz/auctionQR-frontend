@@ -55,10 +55,30 @@
 
 .input-area {
   display: flex;
+  justify-content: space-between;
   padding: 15px;
   border-top: 1px solid #ccc;
   background-color: #fff;
 }
+.contractInfo-area {
+  display: flex;
+  justify-content: end;
+  padding: 15px;
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.botton-contractInfo {
+  padding: 10px 20px;
+  
+  border: none;
+  background-color: #25b720;
+  color: rgb(33, 31, 31);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
 
 .amount-input {
   width: 100px;
@@ -84,6 +104,7 @@ button {
   border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-right: 10px;
 }
 
 button:hover {
