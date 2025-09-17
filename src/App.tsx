@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './App.css';
 import BiddingRoom from './components/BiddingRoom/BiddingRoom';
 import { QRCodeCanvas } from 'qrcode.react';
@@ -16,7 +16,7 @@ require('@solana/wallet-adapter-react-ui/styles.css');
 window.Buffer = Buffer;
 
 function App() {
-  const url = 'https://www.google.com';
+  const [url, setUrl] = useState('https://www.google.com');
   const network = WalletAdapterNetwork.Devnet;
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
   const wallets = useMemo(() => [new PhantomWalletAdapter()], [network]);
@@ -45,6 +45,6 @@ function App() {
       </ConnectionProvider>
     </ConfigProvider>
   );
-}
+};
 
 export default App;

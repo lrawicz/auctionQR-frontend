@@ -7,13 +7,17 @@ import * as anchor from '@coral-xyz/anchor';
 import { PublicKey, SystemProgram } from '@solana/web3.js';
 import ModalShowContractInfo from '../modalShowContractInfo/ModalShowContractInfo';
 import { Spin } from 'antd';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { useContractActions } from '../../hooks/useContractActions';
 
 import idl from '../../smartContract/idl.json';
 
 interface MessageContent {
   amount: number;
   url: string;
-  id: string;
+  timestamp: Date;
+  address: string;
 }
 interface Message {
   message?: MessageContent;
@@ -23,12 +27,15 @@ interface Message {
 
 function BiddingRoom() {
   const { connection } = useConnection();
-  const { publicKey, sendTransaction, wallet } = useWallet();
+  const wallet = useWallet();
+  const { publicKey, sendTransaction } = wallet;
+  const { contractInfo, loading: contractLoading } = useSelector((state: RootState) => state.contract);
+  const { fetchContract } = useContractActions();
+
   const [messages, setMessages] = useState<MessageContent[]>([]);
   const [amount, setAmount] = useState('');
   const [newUrl, setNewUrl] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [contractInfo, setContractInfo] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const [room, _] = useState('bidRoom');
@@ -42,33 +49,9 @@ function BiddingRoom() {
     });
   };
 
-  const getContractInfo = async () => {
-    setLoading(true);
-    try {
-      const provider = getProvider();
-      if (!provider) {
-        alert('Provider is not available');
-        return;
-      }
-      const program = new Program(
-        idl as Idl,
-        provider
-        // new PublicKey(idl.address),
-      ) as Program<Idl>;
-      const [auctionPda, _] = PublicKey.findProgramAddressSync(
-        [Buffer.from('auction')],
-        program.programId
-      );
-      //@ts-ignore
-      const auctionState = await program.account.auction.fetch(auctionPda);
-      setContractInfo(auctionState);
-      setIsModalVisible(true);
-    } catch (error) {
-      console.error('Error getting contract info:', error);
-      alert('Error getting contract info.');
-    } finally {
-      setLoading(false);
-    }
+  const getContractInfo = () => {
+    fetchContract();
+    setIsModalVisible(true);
   };
 
   const handleCloseModal = () => {
@@ -108,7 +91,7 @@ function BiddingRoom() {
       }
       console.log(auctionState);
       console.log('Enviando la transacción de puja...');
-      const signature = await program.methods
+      const signature:anchor.web3.TransactionSignature = await program.methods
         .bid(new anchor.BN(amount), newUrl)
         .accounts({
           auction: auctionPda,
@@ -118,9 +101,9 @@ function BiddingRoom() {
         })
         .rpc();
 
-      console.log('Transacción enviada con éxito. Firma:', signature);
+      console.log('Transacción enviada con éxito. Firma:', signature.toString());
       alert(`¡Puja realizada! Firma: ${signature}`);
-    } catch (error) {
+    } catch (error) { 
       console.error('Error al realizar la puja:', error);
       // alert(`Error: ${error.message}`);
     } finally {
@@ -145,8 +128,8 @@ function BiddingRoom() {
     webSocket.current.onmessage = (event) => {
       try {
         const receivedMessage: MessageContent = JSON.parse(event.data);
-        if (receivedMessage.amount && receivedMessage.url && receivedMessage.id) {
-          console.log('Received message:', receivedMessage);
+        console.log('Received message:', receivedMessage);
+        if (receivedMessage.amount && receivedMessage.url && receivedMessage.address) {
           setMessages((prevMessages) => [...prevMessages, receivedMessage]);
         }
       } catch (error) {
@@ -172,6 +155,7 @@ function BiddingRoom() {
         message: {
           amount: amountNum,
           url: newUrl,
+          address
           id: new Date().toISOString(),
         },
         meta: 'message',
@@ -208,9 +192,9 @@ function BiddingRoom() {
         </div>
         <div className="messages">
           {messages
-            .sort((a, b) => (a.id < b.id ? 1 : -1))
+            .sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1))
             .map((msg) => (
-              <div key={msg.id} className="message">
+              <div key={msg.timestamp.toISOString()} className="message">
                 <span>${msg.amount.toFixed(2)}</span>
                 <p>{msg?.url}</p>
               </div>
@@ -220,6 +204,7 @@ function BiddingRoom() {
           visible={isModalVisible}
           onClose={handleCloseModal}
           contractInfo={contractInfo}
+          loading={contractLoading}
         />
       </div>
     </Spin>

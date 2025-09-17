@@ -1,22 +1,20 @@
 import React, { useEffect } from 'react';
-import { Modal } from 'antd';
+import { Modal, Spin } from 'antd';
+import { ContractState } from '../../interfaces/interfaces';
 
 interface ModalShowContractInfoProps {
   contractInfo: any;
   visible: boolean;
   onClose: () => void;
+  loading: boolean;
 }
-interface AuctionToShow {
-  authority: string;
-  new_content: string;
-  old_content: string;
-  end_timestamp: Date;
-  highest_bid: number;
-  highest_bidder: string;
-  is_active: boolean;
-}
-const ModalShowContractInfo: React.FC<ModalShowContractInfoProps> = ({ contractInfo, visible, onClose }) => {
-  const [auction, setAuction] = React.useState<AuctionToShow | null>(null);
+const ModalShowContractInfo: React.FC<ModalShowContractInfoProps> = ({
+  contractInfo,
+  visible,
+  onClose,
+  loading,
+}) => {
+  const [auction, setAuction] = React.useState<ContractState | null>(null);
   useEffect(() => {
     if (contractInfo) {
       setAuction({
@@ -40,11 +38,13 @@ const ModalShowContractInfo: React.FC<ModalShowContractInfoProps> = ({ contractI
       footer={null}
       width={800}
     >
-      {contractInfo && (
-        <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
-          {JSON.stringify(auction, null, 2)}
-        </pre>
-      )}
+      <Spin spinning={loading} tip="Loading contract info...">
+        {contractInfo && (
+          <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+            {JSON.stringify(auction, null, 2)}
+          </pre>
+        )}
+      </Spin>
     </Modal>
   );
 };
