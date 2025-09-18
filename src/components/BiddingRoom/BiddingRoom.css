@@ -40,7 +40,7 @@
   border-radius: 20px;
   background-color: #262626;
   box-shadow: none;
-  max-width: 70%;
+  min-width: 60%;
   word-break: break-word;
   color: #ffffff;
 }

@@ -7,3 +7,16 @@ export type ContractState = {
   highest_bidder: string,
   is_active: boolean
 }
+
+export interface MessageContent {
+  amount: number;
+  url: string;
+  timestamp: Date;
+  address: string;
+}
+export interface Message {
+  message?: MessageContent;
+  messages?: MessageContent[];
+  meta: string;
+  room: string;
+}

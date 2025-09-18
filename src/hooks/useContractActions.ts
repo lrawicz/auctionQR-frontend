@@ -10,7 +10,7 @@ export const useContractActions = () => {
 
   const fetchContract = () => {
     if (!wallet.connected) {
-        alert('Por favor, conecta tu billetera.');
+        alert('Please connect your wallet.');
         return;
     }
     dispatch(fetchContractInfo({ connection, wallet }));
