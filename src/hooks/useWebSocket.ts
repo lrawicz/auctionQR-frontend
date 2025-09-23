@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Message, MessageContent } from '../interfaces/interfaces';
-import settings from '../config';
+import config from '../settings';
 
 const useWebSocket = (room: string) => {
   const [messages, setMessages] = useState<MessageContent[]>([]);
@@ -9,7 +9,7 @@ const useWebSocket = (room: string) => {
 
   useEffect(() => {
     const connect = () => {
-      webSocket.current = new WebSocket(settings.webSocketUrl);
+      webSocket.current = new WebSocket(config.webSocketUrl);
 
       webSocket.current.onopen = () => {
         console.log('WebSocket connected');
