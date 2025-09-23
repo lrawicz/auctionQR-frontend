@@ -50,9 +50,9 @@ function App() {
           <WalletModalProvider>
             <div className="App-container">
               <div className="sidebar">
-                                <div className="qr-code-container">
-                  <QRCodeCanvas value="https://qrsol.fun/qr-redirect" size={256} bgColor="#FFFFFF" fgColor="#000000" />
-                </div>
+                  <div className="qr-code-container">
+                  <QRCodeCanvas value={`${config.apiUrl}/qr-redirect`} size={256} bgColor="#FFFFFF" fgColor="#000000" />
+                  </div>
                 <a href={`http://${url}`} target="_blank" rel="noopener noreferrer">
                   {url}
                 </a>
