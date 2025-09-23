@@ -21,7 +21,7 @@ function App() {
   const network = (process.env.REACT_APP_SOLANA_CLUSTER as WalletAdapterNetwork) || WalletAdapterNetwork.Devnet;
   const endpoint = process.env.REACT_APP_SOLANA_RPC_HOST!;
   const wallets = useMemo(() => [new PhantomWalletAdapter()], [network]);
-
+  const [defaultUrl] = useState("https://" + config.apiUrl?.replace("http://","").replace("https://",""));  
   useEffect(() => {
     const fetchQrContent = async () => {
       try {
@@ -31,12 +31,12 @@ function App() {
           setUrl(data.url);
         } else {
           console.error('Failed to fetch QR content, falling back to default.');
-          setUrl(`https://${config.apiUrl}/`); // Fallback URL
+          setUrl(defaultUrl); // Fallback URL
         }
       }
       catch (error) {
         console.error('Error fetching QR content, falling back to default:', error);
-        setUrl(`https://${config.apiUrl}/`); // Fallback URL
+        setUrl(defaultUrl); // Fallback URL
       }
     };
 

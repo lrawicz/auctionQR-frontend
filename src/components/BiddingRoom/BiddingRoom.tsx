@@ -136,7 +136,7 @@ function BiddingRoom() {
               address:item.address,
               url:item.url,
               amount:item.amount,
-              timestamp:item.timestamp
+              timestamp:new Date(item.timestamp)
             }
           }))
         }
@@ -207,8 +207,7 @@ function BiddingRoom() {
                 <span>SOL {msg.amount}</span>
                 <p>{msg.url}</p>
                 <p>{msg.address.substring(0,4)+'...'+msg.address.substring(msg.address.length-4)}</p>
-                <p>{msg.timestamp.toLocaleString()
-                }</p>
+                <p>{msg.timestamp.getHours().toString().padStart(2, '0') + ':' + msg.timestamp.getMinutes().toString().padStart(2, '0') + ':' + msg.timestamp.getSeconds().toString().padStart(2, '0')}</p>
               </div>
             ))}
         </div>
