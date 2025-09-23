@@ -10,16 +10,38 @@ import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { clusterApiUrl } from '@solana/web3.js';
 import { ConfigProvider, theme } from 'antd';
+import config from './settings';
 
 require('@solana/wallet-adapter-react-ui/styles.css');
 
 window.Buffer = Buffer;
 
 function App() {
-  const [url, setUrl] = useState('https://www.google.com');
-  const network = WalletAdapterNetwork.Devnet;
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+  const [url, setUrl] = useState('');
+  const network = (process.env.REACT_APP_SOLANA_CLUSTER as WalletAdapterNetwork) || WalletAdapterNetwork.Devnet;
+  const endpoint = process.env.REACT_APP_SOLANA_RPC_HOST!;
   const wallets = useMemo(() => [new PhantomWalletAdapter()], [network]);
+
+  useEffect(() => {
+    const fetchQrContent = async () => {
+      try {
+        const response = await fetch(`${config.apiUrl}/latest-qr-content`);
+        if (response.ok) {
+          const data = await response.json();
+          setUrl(data.url);
+        } else {
+          console.error('Failed to fetch QR content, falling back to default.');
+          setUrl(`https://${config.apiUrl}/`); // Fallback URL
+        }
+      }
+      catch (error) {
+        console.error('Error fetching QR content, falling back to default:', error);
+        setUrl(`https://${config.apiUrl}/`); // Fallback URL
+      }
+    };
+
+    fetchQrContent();
+  }, []);
 
   return (
     <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
@@ -29,9 +51,9 @@ function App() {
             <div className="App-container">
               <div className="sidebar">
                                 <div className="qr-code-container">
-                  <QRCodeCanvas value={url} size={256} bgColor="#FFFFFF" fgColor="#000000" />
+                  <QRCodeCanvas value="https://qrsol.fun/qr-redirect" size={256} bgColor="#FFFFFF" fgColor="#000000" />
                 </div>
-                <a href={url} target="_blank" rel="noopener noreferrer">
+                <a href={`http://${url}`} target="_blank" rel="noopener noreferrer">
                   {url}
                 </a>
               </div>
