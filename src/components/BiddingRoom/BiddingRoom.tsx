@@ -12,7 +12,7 @@ import { RootState } from '../../store/store';
 import { useContractActions } from '../../hooks/useContractActions';
 import {Message,MessageContent} from "../../interfaces/interfaces"
 import idl from '../../smartContract/idl.json';
-import settings from '../../config';
+import config from '../../settings';
 
 
 function BiddingRoom() {
@@ -101,7 +101,7 @@ function BiddingRoom() {
     }
   };
   useEffect(() => {
-    webSocket.current = new WebSocket(settings.webSocketUrl);
+    webSocket.current = new WebSocket(config.webSocketUrl);
 
     webSocket.current.onopen = () => {
       console.log('WebSocket connected');
