@@ -19,3 +19,6 @@
   padding: 20px;
   border-radius: 10px;
 }
+.sidebar > a {
+    color: var(--blue-title);
+}
