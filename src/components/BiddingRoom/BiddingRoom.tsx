@@ -13,6 +13,7 @@ import { useContractActions } from '../../hooks/useContractActions';
 import {Message,MessageContent} from "../../interfaces/interfaces"
 import idl from '../../smartContract/idl.json';
 import config from '../../settings';
+import { useCountdown } from '../../hooks/useCountdown';
 
 
 function BiddingRoom() {
@@ -21,6 +22,8 @@ function BiddingRoom() {
   const { publicKey, sendTransaction } = wallet;
   const { contractInfo, loading: contractLoading } = useSelector((state: RootState) => state.contract);
   const { fetchContract } = useContractActions();
+
+
 
   const [messages, setMessages] = useState<MessageContent[]>([]);
   const [amount, setAmount] = useState('');
@@ -124,8 +127,13 @@ function BiddingRoom() {
             receivedMessage.message.url && receivedMessage.message.address) {
               //@ts-ignore
               setMessages((prevMessages) => [
-                ...prevMessages, 
-                receivedMessage.message
+                {
+                  address:receivedMessage.message?.address,
+                  url:receivedMessage.message?.url,
+                  amount:receivedMessage.message?.amount,
+                  timestamp:new Date(receivedMessage.message?.timestamp||0)
+                },
+                 ...prevMessages, 
               ]);
             }
         }
@@ -175,8 +183,10 @@ function BiddingRoom() {
     }
   };
 */
+
   return (
     <Spin spinning={loading} tip="Processing...">
+
       <div className="chat-container">
         <div className="input-area">
           <input
@@ -193,15 +203,15 @@ function BiddingRoom() {
             placeholder="new url"
             className="text-input"
           />
-          <button onClick={sendTx}>Send</button>
-          <button className="botton-contractInfo" onClick={getContractInfo}>
+          <button className="botton-sendBid" onClick={sendTx}>Send</button>
+          {/* <button className="botton-contractInfo" onClick={getContractInfo}>
             Get contract info
-          </button>
+          </button> */}
         </div>
         <div className="messages">
           {messages
             .sort((a, b) => (
-              a.timestamp < b.timestamp ? 1 : -1))
+              a.amount < b.amount ? 1 : -1))
             .map((msg) => (
               <div key={msg.timestamp.toString()} className="message">
                 <span>SOL {msg.amount}</span>

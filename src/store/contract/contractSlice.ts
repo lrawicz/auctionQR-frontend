@@ -6,10 +6,22 @@ import { PublicKey } from '@solana/web3.js';
 import idl from '../../smartContract/idl.json';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { Connection } from '@solana/web3.js';
+import * as anchor from '@coral-xyz/anchor'; // Import anchor for BN
 
+// Nueva interfaz para la cuenta de Auction
+export interface AuctionAccount {
+  authority: PublicKey;
+  new_content: string;
+  old_content: string;
+  end_timestamp: anchor.BN; // i64 en Solana se mapea a BN en Anchor
+  highest_bid: anchor.BN;   // u64 en Solana se mapea a BN en Anchor
+  highest_bidder: PublicKey;
+  is_active: boolean;
+  bump: number; // u8 en Solana se mapea a number
+}
 
 export interface ContractState {
-  contractInfo: ContractState | null;
+  contractInfo: AuctionAccount | null; // Ahora usa AuctionAccount
   loading: boolean;
   error: string | null;
 }
