@@ -15,7 +15,7 @@ export interface MessageContent {
   address: string;
 }
 export interface Message {
-  message?: MessageContent;
+  content?: MessageContent;
   messages?: MessageContent[];
   meta: string;
   room: string;

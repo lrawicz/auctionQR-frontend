@@ -62,7 +62,7 @@ const useWebSocket = (room: string) => {
   const sendMessage = (message: Omit<MessageContent, 'timestamp' | 'address'>) => {
     if (webSocket.current && isConnected) {
       const messageToSend: Message = {
-        message: {
+        content: {
           ...message,
           timestamp: new Date(),
           address: '', // The server should set the address

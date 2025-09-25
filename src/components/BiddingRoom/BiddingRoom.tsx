@@ -22,11 +22,11 @@ function BiddingRoom() {
   const { publicKey, sendTransaction } = wallet;
   const { contractInfo, loading: contractLoading } = useSelector((state: RootState) => state.contract);
   const { fetchContract } = useContractActions();
-
+  const [multiplier] = useState(1)//1_000_000_000
 
 
   const [messages, setMessages] = useState<MessageContent[]>([]);
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState<number>(0);
   const [newUrl, setNewUrl] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -82,10 +82,8 @@ function BiddingRoom() {
       if (oldBidderKey.equals(SystemProgram.programId)) {
         oldBidderKey = publicKey;
       }
-      console.log(auctionState);
-      console.log('Sending the bid transaction...');
       const signature:anchor.web3.TransactionSignature = await program.methods
-        .bid(new anchor.BN(amount), newUrl)
+        .bid(new anchor.BN(amount ), newUrl) //* multiplier
         .accounts({
           auction: auctionPda,
           bidder: publicKey,
@@ -122,16 +120,16 @@ function BiddingRoom() {
         const receivedMessage: Message = JSON.parse(event.data);
         if(receivedMessage.meta === 'new_bid_placed'){
           console.log('Received message:', receivedMessage);
-          if (receivedMessage.message &&
-            receivedMessage.message.amount && 
-            receivedMessage.message.url && receivedMessage.message.address) {
+          if (receivedMessage.content &&
+            receivedMessage.content.amount && 
+            receivedMessage.content.url && receivedMessage.content.address) {
               //@ts-ignore
               setMessages((prevMessages) => [
                 {
-                  address:receivedMessage.message?.address,
-                  url:receivedMessage.message?.url,
-                  amount:receivedMessage.message?.amount,
-                  timestamp:new Date(receivedMessage.message?.timestamp||0)
+                  address:receivedMessage.content?.address,
+                  url:receivedMessage.content?.url,
+                  amount:(receivedMessage.content?.amount||0) /1_000_000_000,
+                  timestamp:new Date(receivedMessage.content?.timestamp||0)
                 },
                  ...prevMessages, 
               ]);
@@ -143,7 +141,7 @@ function BiddingRoom() {
             return {
               address:item.address,
               url:item.url,
-              amount:item.amount,
+              amount:(item.amount||0) /1_000_000_000,
               timestamp:new Date(item.timestamp)
             }
           }))
@@ -192,7 +190,7 @@ function BiddingRoom() {
           <input
             type="number"
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            onChange={(e) => setAmount(Number(e.target.value||0))}
             placeholder="Amount"
             className="amount-input"
           />
