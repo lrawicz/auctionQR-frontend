@@ -32,11 +32,6 @@
   height: 100%; /* Take full height of its container */
 }
 
-.qr-code-container {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-}
 
 @media (max-width: 768px) {
   .App-container {

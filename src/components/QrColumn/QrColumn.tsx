@@ -8,9 +8,10 @@ import { set } from '@coral-xyz/anchor/dist/cjs/utils/features';
 
 function QrColumn(){
   const [url, setUrl] = useState('');
+  const [showenUrl, setShowenUrl] = useState('');
   const [auctionNumber, setAuctionNumber] = useState(0);
   const timeLeft = useCountdown();
-  const [defaultUrl] = useState("https://" + config.apiUrl?.replace("http://","").replace("https://",""));  
+  const [defaulttUrl] = useState("https://" + config.apiUrl?.replace("http://","").replace("https://",""));  
   const CountdownDisplay: FC = () => {
     const { hours, minutes, seconds } = timeLeft;
     const formatTime = (num: number) => num.toString().padStart(2, '0');
@@ -25,18 +26,26 @@ function QrColumn(){
         const response = await fetch(`${config.apiUrl}/latest-qr-content`);
         if (response.ok) {
           const data = await response.json();
-          console.log("data",data)
-          setUrl(data.url);
+          const urlWithoutHTTP = data.url.replace("http://", "").replace("https://", "");
+          setUrl(urlWithoutHTTP)
+          if(urlWithoutHTTP.length<25){
+            setShowenUrl(urlWithoutHTTP)
+          }else{
+            setShowenUrl(urlWithoutHTTP.substring(0,10)+"...\n"+urlWithoutHTTP.substring(urlWithoutHTTP.length - 10 ))
+          }
           setAuctionNumber(data.auction_number);
         } else {
           console.error('Failed to fetch QR content, falling back to default.');
-          setUrl(defaultUrl); // Fallback URL
+          setUrl(defaulttUrl.replace("http://", "").replace("https://", "")); // Fallback URL
+          setShowenUrl(defaulttUrl);
         }
       }
       catch (error) {
         console.error('Error fetching QR content, falling back to default:', error);
-        setUrl(defaultUrl); // Fallback URL
+        setUrl(defaulttUrl); // Fallback URL
+        setShowenUrl(defaulttUrl);
       }
+      
     };
 
     fetchQrContent();
@@ -48,10 +57,12 @@ function QrColumn(){
             <h2># {auctionNumber.toString().padStart(4, '0')}</h2>
           <CountdownDisplay />
         </div>
-        <QRCodeCanvas value={`${config.apiUrl}/qr-redirect`} size={256} bgColor="#FFFFFF" fgColor="#000000" />
+        <QRCodeCanvas value={`${config.apiUrl}/qr-redirect`} size={256} bgColor="var(" fgColor="rgba(255, 238, 252, 1)" />
         </div>
-        <a href={`http://${url}`} target="_blank" rel="noopener noreferrer">
-          {url}
+        <a href={`${url}`} target="_blank" rel="noopener noreferrer">
+          {/* {url.substring(0,20)}...{url.substring(url.length - 20 )} */}
+          {showenUrl}
+          
         </a>
       </div>
   )
