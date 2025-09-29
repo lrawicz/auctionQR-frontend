@@ -60,7 +60,8 @@
 .input-area {
   display: flex;
   justify-content: space-between;
-  padding: 15px;
+  padding-top: 15px;
+  padding-bottom: 10px;
   border-top: 1px solid #444;
   background-color: #1f1f1f;
 }
@@ -116,4 +117,20 @@
 
 button:hover {
   background-color: #4CAF50;
+}
+
+.min-bid-container {
+  background-color: #fffacd20; /* Soft yellow with transparency */
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  width: 100px;
+  align-self: left;
+}
+
+.min-bid-info {
+  color: #e0e0e0; /* Light gray for better contrast on soft yellow */
+  font-size: 0.9em;
+  margin: 0;
 }

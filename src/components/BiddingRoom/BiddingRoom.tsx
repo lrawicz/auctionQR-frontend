@@ -22,7 +22,7 @@ function BiddingRoom() {
   const { publicKey, sendTransaction } = wallet;
   const { contractInfo, loading: contractLoading } = useSelector((state: RootState) => state.contract);
   const { fetchContract } = useContractActions();
-  const [multiplier] = useState(1)//1_000_000_000
+  const [multiplier] = useState(1_000_000_000)//1_000_000_000
 
 
   const [messages, setMessages] = useState<MessageContent[]>([]);
@@ -60,6 +60,10 @@ function BiddingRoom() {
     setLoading(true);
     try {
       const provider = getProvider();
+      if (amount<0.01) {
+        alert('Bid amount must be at least 0.01 SOL');
+        return;
+      }
       if (!provider) {
         alert('Provider is not available');
         return;
@@ -83,7 +87,7 @@ function BiddingRoom() {
         oldBidderKey = publicKey;
       }
       const signature:anchor.web3.TransactionSignature = await program.methods
-        .bid(new anchor.BN(amount ), newUrl) //* multiplier
+        .bid(new anchor.BN(amount * multiplier), newUrl)
         .accounts({
           auction: auctionPda,
           bidder: publicKey,
@@ -128,7 +132,7 @@ function BiddingRoom() {
                 {
                   address:receivedMessage.content?.address,
                   url:receivedMessage.content?.url,
-                  amount:(receivedMessage.content?.amount||0) /1_000_000_000,
+                  amount:(receivedMessage.content?.amount||0) /multiplier,
                   timestamp:new Date(receivedMessage.content?.timestamp||0)
                 },
                  ...prevMessages, 
@@ -141,7 +145,7 @@ function BiddingRoom() {
             return {
               address:item.address,
               url:item.url,
-              amount:(item.amount||0) /1_000_000_000,
+              amount:(item.amount||0) /multiplier,
               timestamp:new Date(item.timestamp)
             }
           }))
@@ -204,7 +208,10 @@ function BiddingRoom() {
           <button className="botton-sendBid" onClick={sendTx}>Send</button>
           {/* <button className="botton-contractInfo" onClick={getContractInfo}>
             Get contract info
-          </button> */}
+            </button> */}
+        </div>
+        <div className="min-bid-container">
+          <p className="min-bid-info">Mini. bid is 0.01 SOL</p>
         </div>
         <div className="messages">
           {messages
