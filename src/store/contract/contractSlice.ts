@@ -3,10 +3,12 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { Program, AnchorProvider, Idl } from '@coral-xyz/anchor';
 import { Buffer } from 'buffer';
 import { PublicKey } from '@solana/web3.js';
-import idl from '../../smartContract/idl.json';
+import devnetIdl from '../../smartContract/devnet/idl.json';
+import mainnetIdl from '../../smartContract/mainnet/idl.json'; // Import mainnet IDL
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { Connection } from '@solana/web3.js';
 import * as anchor from '@coral-xyz/anchor'; // Import anchor for BN
+import config from '../../settings'; // Import config
 
 // Nueva interfaz para la cuenta de Auction
 export interface AuctionAccount {
@@ -46,6 +48,7 @@ export const fetchContractInfo = createAsyncThunk(
     if (!provider) {
       throw new Error('Provider is not available');
     }
+    const idl = config.solanaNetwork === 'devnet' ? devnetIdl : mainnetIdl; // Conditionally load IDL
     const program = new Program(
       idl as Idl,
       provider

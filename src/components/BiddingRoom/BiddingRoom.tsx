@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './BiddingRoom.css';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { Program, AnchorProvider, Idl } from '@coral-xyz/anchor';
@@ -11,10 +11,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { useContractActions } from '../../hooks/useContractActions';
 import {Message,MessageContent} from "../../interfaces/interfaces"
-import idl from '../../smartContract/idl.json';
 import config from '../../settings';
-import { useCountdown } from '../../hooks/useCountdown';
 
+import devnetIdl from '../../smartContract/devnet/idl.json';
+import mainnetIdl from '../../smartContract/mainnet/idl.json';
 
 function BiddingRoom() {
   const { connection } = useConnection();
@@ -65,10 +65,10 @@ function BiddingRoom() {
         return;
       }
 
+      const idl = config.solanaNetwork === 'devnet' ? devnetIdl : mainnetIdl;
       const program = new Program(
         idl as Idl,
         provider
-        // new PublicKey(idl.address),
       ) as Program<Idl>;
 
       const [auctionPda, _] = PublicKey.findProgramAddressSync(

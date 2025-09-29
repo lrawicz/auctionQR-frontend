@@ -2,8 +2,10 @@ import { Program, AnchorProvider, Idl } from '@coral-xyz/anchor';
 import * as anchor from '@coral-xyz/anchor';
 import { PublicKey, SystemProgram } from '@solana/web3.js';
 import { Buffer } from 'buffer';
-import idl from '../smartContract/idl.json';
 import { WalletContextState } from '@solana/wallet-adapter-react';
+import config from '../settings';
+import devnetIdl from '../smartContract/devnet/idl.json';
+import mainnetIdl from '../smartContract/mainnet/idl.json';
 
 // Define the interface for the auction account state to avoid using any.
 export interface AuctionState {
@@ -19,6 +21,7 @@ const getProvider = (connection: any, wallet: WalletContextState) => {
 };
 
 const getProgram = (provider: AnchorProvider) => {
+  const idl = config.solanaNetwork === 'devnet' ? devnetIdl : mainnetIdl;
   return new Program(idl as Idl, provider);
 };
 
