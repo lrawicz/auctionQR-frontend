@@ -27,16 +27,17 @@ function QrColumn(){
         if (response.ok) {
           const data = await response.json();
           const urlWithoutHTTP = data.url.replace("http://", "").replace("https://", "");
-          setUrl(urlWithoutHTTP)
+          setUrl("https://"+urlWithoutHTTP)
           if(urlWithoutHTTP.length<25){
             setShowenUrl(urlWithoutHTTP)
-          }else{
+          }
+          else{
             setShowenUrl(urlWithoutHTTP.substring(0,10)+"...\n"+urlWithoutHTTP.substring(urlWithoutHTTP.length - 10 ))
           }
           setAuctionNumber(data.auction_number);
         } else {
           console.error('Failed to fetch QR content, falling back to default.');
-          setUrl(defaulttUrl.replace("http://", "").replace("https://", "")); // Fallback URL
+          setUrl(defaulttUrl); // Fallback URL
           setShowenUrl(defaulttUrl);
         }
       }
@@ -52,18 +53,25 @@ function QrColumn(){
   }, []);
   return(
       <div className="sidebar">
-        <div className="qr-code-container">
+        {/* Actual Auction Section */}
+        <div className="actual-auction-section">
+          <h3>Current Auction</h3>
           <div className="auction-info">
             <h2># {auctionNumber.toString().padStart(4, '0')}</h2>
-          <CountdownDisplay />
+            <CountdownDisplay />
+          </div>
         </div>
-        <QRCodeCanvas value={`${config.apiUrl}/qr-redirect`} size={256} bgColor="var(" fgColor="rgba(255, 238, 252, 1)" />
+
+        {/* Past Auction Section */}
+        <div className="past-auction-section">
+          <h3>Past Auction</h3>
+          <div className="qr-code-container">
+            <QRCodeCanvas value={`${config.apiUrl}/qr-redirect`} size={256} bgColor="var(" fgColor="rgba(255, 238, 252, 1)" />
+          </div>
+          <a href={`${url}`} target="_blank" rel="noopener noreferrer">
+            {showenUrl}
+          </a>
         </div>
-        <a href={`${url}`} target="_blank" rel="noopener noreferrer">
-          {/* {url.substring(0,20)}...{url.substring(url.length - 20 )} */}
-          {showenUrl}
-          
-        </a>
       </div>
   )
 }
