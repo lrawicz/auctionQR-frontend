@@ -4,7 +4,6 @@ import BiddingRoom from './components/BiddingRoom/BiddingRoom';
 import { SolanaConnect } from './components/SolanaConnect/SolanaConnect';
 import { Buffer } from 'buffer';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { ConfigProvider, theme } from 'antd';
@@ -29,7 +28,7 @@ function App() {
   const cutoffDate = new Date(config.cutoffDate);
   const showComingSoon = currentTime < cutoffDate;
 
-  const network = (process.env.REACT_APP_SOLANA_CLUSTER as WalletAdapterNetwork) || WalletAdapterNetwork.Devnet;
+  const network = config.solanaNetwork;
   const endpoint = process.env.REACT_APP_SOLANA_RPC_HOST!;
   const wallets = useMemo(() => [new PhantomWalletAdapter()], [network]);
 
