@@ -1,0 +1,21 @@
+.coming-soon-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #141414; /* Dark background similar to chat-container */
+  color: #e0e0e0; /* Light text color */
+  font-family: Arial, sans-serif;
+}
+
+.coming-soon-text {
+  font-size: 3em;
+  color: #4CAF50; /* Green accent color */
+  margin-bottom: 20px;
+}
+
+.coming-soon-message {
+  font-size: 1.2em;
+  color: #aaa;
+}
