@@ -34,11 +34,12 @@ function QrColumn(){
           else{
             setShowenUrl(urlWithoutHTTP.substring(0,10)+"...\n"+urlWithoutHTTP.substring(urlWithoutHTTP.length - 10 ))
           }
-          setAuctionNumber(data.auction_number);
+          setAuctionNumber(data.auction_number+1);
         } else {
           console.error('Failed to fetch QR content, falling back to default.');
           setUrl(defaulttUrl); // Fallback URL
           setShowenUrl(defaulttUrl);
+          setAuctionNumber(1)
         }
       }
       catch (error) {
