@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/daily_auction.json`.
  */
 export type DailyAuction = {
-  "address": "FtqmpF6VR9C4hxfboSD7VdPxYXRz4G395b6yLvoBALT1",
+  "address": "7mFatTZme99VGSwN9VwxiQxfCTof6cqKhAkZq41yxeb4",
   "metadata": {
     "name": "dailyAuction",
     "version": "0.1.0",

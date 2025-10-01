@@ -5,7 +5,7 @@ function ComingSoon() {
   return (
     <div className="coming-soon-container">
       <h1 className="coming-soon-text">Coming Soon...</h1>
-      <p className="coming-soon-message">Our auction will start on October 1st at 16:00 GMT 00.</p>
+      <p className="coming-soon-message">Our auction will start on October 2nd at 16:00 GMT 00.</p>
     </div>
   );
 }
